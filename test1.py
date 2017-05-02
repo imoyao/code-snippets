@@ -1,27 +1,28 @@
+#coding=utf-8
 import os
 class Person(object):
-	@classmethod
-	def sing(self):
-		print("the person is sing.")
-	def running(self):
-		print("the person is running.")
-	@property
-	def joking(self):
-		print("the person is joking.")
+    @classmethod
+    def sing(self):
+
+	print("the person is sing.")
+    def running(self):
+	print("the person is running.")
+    @property
+    def joking(self):
+        print ("this is a property method.")	    
+        print("the person is joking.")
 
 
 
 if __name__ == '__main__':
-	xiaoming = Person()
-	
-	xiaoming.running()
-	xiaoming.joking
+    xiaoming = Person()
+    xiaoming.running()
+    xiaoming.joking
 	# Person.joking+"heheh"
-
-	xiaoming.sing()
-	print("*"*20)
+    xiaoming.sing()
+    print("*"*20)
 	# Person.running()
-	Person.sing()
+    Person.sing()
 
 # class Person(object):
 
