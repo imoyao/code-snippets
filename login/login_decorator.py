@@ -33,33 +33,30 @@ def index():
 	print ("Welcome to the homepage for everyone.")
 
 @login_confirm
-def normal_user(*args,**kwargs):
+def normal_user(user):
 	print ("Welcome {0},This page is for login user.".format(user['name']))
 
-@login_confirm
 @admin_confirm
-def admin(*args,**kwargs):
+@login_confirm
+def admin(user):
 	print ("Welcome {0},This page is for the ADMIN.".format(user['name']))
 
-def login(*args,**kwargs):
-	# print "in user:{0}".format(user)
-	print "in user1111:{0}".format(user)
-	print "in user111221:{0}".format(args)
-	# print "in user222:{0}".format(kwargs)
+def login(user):
+	# print "in user1111:{0}".format(user)
 	name = raw_input("please enter your name:")
 	pw = raw_input("please enter your passwd:")
 
 	if name == "admin" and pw == '111111':
-		args[0]['name'] = 'admin'
-		args[0]['is_login'] = True
-		args[0]['is_admin'] = True
+		user['name'] = 'admin'
+		user['is_login'] = True
+		user['is_admin'] = True
 	elif name and pw == '123':
-		args[0]['name'] = name
-		args[0]['is_login'] = True
+		user['name'] = name
+		user['is_login'] = True
 	else:
-		args[0]['name'] = name
-	print "outer user:{0}".format(args)
-	return args
+		user['name'] = name
+	# print "outer user111:{0}".format(user)
+	return user
 
 def main(user):
 	while True:
@@ -80,7 +77,6 @@ def main(user):
 		elif enter_str == '3':
 			chose_login = raw_input("please login(y/n):")
 			if chose_login.lower() == 'y':
-				# print ("this is {0},{1}".format(args,kwargs))
 				login(user)
 				normal_user(user)
 			else:
