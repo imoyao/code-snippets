@@ -1,6 +1,6 @@
 #coding=utf-8
 import json
-import codecs
+
 def city_info():
 	with open('./cityinfo.json','r') as f:
 		code_str = json.load(f)
