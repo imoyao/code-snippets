@@ -8,6 +8,10 @@ import requests
 import re
 import json
 import datetime
+import time
+
+import schedule
+import itchat
 
 import citycode
 # http://www.jianshu.com/p/ab8d9e576ac4
@@ -35,12 +39,12 @@ def get_forecast(url):
 def forecast_info(forecast):
     data_info = ''''''
     for info in forecast:
-        date = str2unicode(info['date'])
-        we_type = str2unicode(info['type'])
-        high_tem = str2unicode(info['high']).replace('高温','最高气温：')
-        low_tem = str2unicode(info['low']).replace('低温','最低气温：')
-        wind_dir= str2unicode(info['fengxiang'])
-        wind_force_temp= str2unicode(info['fengli'])
+        date = encode_str(info['date'])
+        we_type = encode_str(info['type'])
+        high_tem = encode_str(info['high']).replace('高温','最高气温：')
+        low_tem = encode_str(info['low']).replace('低温','最低气温：')
+        wind_dir= encode_str(info['fengxiang'])
+        wind_force_temp= encode_str(info['fengli'])
         # print wind_force_temp
         wind_f = re.search('(\d+级)',wind_force_temp)
         wind_force = wind_f.group(1)
@@ -53,9 +57,14 @@ def forecast_info(forecast):
         '''.format(date = date,we_type=we_type,high_tem=high_tem,low_tem=low_tem,wind_dir=wind_dir,wind_force=wind_force)
     return data_info
     # return mystr
-def str2unicode(somestr):
-    unic = somestr.encode('utf-8')
-    return unic
+
+def decode_str(somestr):
+    de_str = somestr.decode('utf-8')
+    return de_str
+
+def encode_str(somestr):
+    en_str = somestr.encode('utf-8')
+    return en_str
 
 def now_time():
     now = datetime.datetime.now()
@@ -97,8 +106,8 @@ def weather_msg():
         data = info['data']
         if data:
         # print data
-            # cityname = str2unicode(data['data']['city'])
-            tips = str2unicode(data['data']['ganmao']) or None
+            # cityname = encode_str(data['data']['city'])
+            tips = encode_str(data['data']['ganmao']) or None
             forecast = data['data']['forecast']
             res = format_msg(cityname,tips,forecast)
             return res
@@ -109,6 +118,42 @@ def weather_msg():
         msg = url_ret['msg']
         return msg
 
+def time_task(jobname):
+    schedule.every(5).seconds.do(jobname)
+    # schedule.every().day.at("06:30").do(jobname)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+
+def wx_sender(gname,sendmsg):            #TODO   
+# AttributeError: 'module' object has no attribute 'startfile'
+
+    itchat.auto_login(hotReload=True)
+    group = decode_str(gname)
+    group_name = itchat.search_chatrooms(name=group)[0]['UserName']
+    # print ("group name is ",group_name)
+    msg_str = decode_str(sendmsg)
+    itchat.send_msg(msg = msg_str,toUserName = group_name)
+    # itchat.run()
+def printhello(num1,num2):
+    sum_num = num1+num2
+    print sum_num
+
+# if __name__ == '__main__':
+
+#     # res = weather_msg()
+#     # num1 = 1
+#     # num2 =3
+#     a = time_task(printhello)       #TODO 偏函数！！！
+#     b = a(2,3)
+#     print b
+
+#     # wx_sender(gname,sendmsg)
+#     # res = weather_msg()
+#     # print (res)
+
+
 if __name__ == '__main__':
+    
     res = weather_msg()
     print (res)
