@@ -15,6 +15,24 @@ import citycode
 # http://www.jianshu.com/p/ab8d9e576ac4
 
 
+def city_url(cityname):
+    result = {}
+    baseurl = 'http://wthrcdn.etouch.cn/weather_mini?citykey='
+    ret = citycode.get_code(cityname)
+    if ret and ret['data']:
+        citykey = ret['data']
+        url = baseurl + citykey
+        result['data'] = url
+        result['code'] = 1
+        result['msg'] = ''
+    else:
+        res = ret['msg']
+        result['data'] = None
+        result['code'] = 0
+        result['msg'] = res
+    return result
+
+
 def get_forecast(url):
     try:
         info = {}
@@ -70,40 +88,6 @@ def forecast_info(cityname, tips, forecast):
         traceback.print_exc()
 
 
-def decode_str(somestr):
-    de_str = somestr.decode('utf-8')
-    return de_str
-
-
-def encode_str(somestr):
-    en_str = somestr.encode('utf-8')
-    return en_str
-
-
-def now_time():
-    now = datetime.datetime.now()
-    now_day = now.strftime('%Y年%m月%d日')
-    return now_day
-
-
-def city_url(cityname):
-    result = {}
-    baseurl = 'http://wthrcdn.etouch.cn/weather_mini?citykey='
-    ret = citycode.get_code(cityname)
-    if ret and ret['data']:
-        citykey = ret['data']
-        url = baseurl + citykey
-        result['data'] = url
-        result['code'] = 1
-        result['msg'] = ''
-    else:
-        res = ret['msg']
-        result['data'] = None
-        result['code'] = 0
-        result['msg'] = res
-    return result
-
-
 def weather_msg(cityname):
     try:
         url_ret = city_url(cityname)
@@ -126,13 +110,29 @@ def weather_msg(cityname):
         traceback.print_exc()
 
 
+def wx_sender(gname, sendmsg):  # TODO
+    try:
+        newInstance = itchat.new_instance()
+        newInstance.auto_login(
+            hotReload=True, statusStorageDir='newInstance.pkl')
+        # itchat.auto_login(hotReload=True)
+        group = decode_str(gname)
+        group_name = newInstance.search_chatrooms(name=group)[0]['UserName']
+        msg_str = decode_str(sendmsg)
+        if group_name:
+            newInstance.send_msg(msg=msg_str, toUserName=group_name)
+    except Exception as e:
+        traceback.print_exc()
+
+
 def time_task(jobname, *args):
     try:
         job_name = jobname.__name__
-        if 'weather_msg' in job_name:       #TODO:if err,try again.one more time,send msg to admin.
+        # TODO:if err,try again.one more time,send msg to admin.
+        if 'weather_msg' in job_name:
             schedule.every().day.at("06:00").do(jobname, *args)
         elif 'wx_sender' in job_name:
-            schedule.every().day.at("06:30").do(jobname,*args)
+            schedule.every().day.at("06:30").do(jobname, *args)
             # schedule.every(30).seconds.do(jobname, *args)
         elif job_name:
             schedule.every(5).seconds.do(jobname, *args)
@@ -145,29 +145,31 @@ def time_task(jobname, *args):
         traceback.print_exc()
 
 
-def wx_sender(gname, sendmsg):  # TODO
-    try:
-        newInstance = itchat.new_instance()
-        newInstance.auto_login(hotReload=True, statusStorageDir='newInstance.pkl')
-        # itchat.auto_login(hotReload=True)
-        group = decode_str(gname)
-        group_name = newInstance.search_chatrooms(name=group)[0]['UserName']
-        msg_str = decode_str(sendmsg)
-        if group_name:
-            newInstance.send_msg(msg=msg_str, toUserName=group_name)
-    except Exception as e:
-        traceback.print_exc()
-
-
 def sumnum(num1, num2):  # for test
     sum_num = num1+num2
     return sum_num
 
 
+def decode_str(somestr):
+    de_str = somestr.decode('utf-8')
+    return de_str
+
+
+def encode_str(somestr):
+    en_str = somestr.encode('utf-8')
+    return en_str
+
+
+def now_time():
+    now = datetime.datetime.now()
+    now_day = now.strftime('%Y年%m月%d日')
+    return now_day
+
+
 def main():
     cityname = raw_input('please enter the cityname:')
-    gname = 'imoyao'        #The group to send msg
-    msg = weather_msg(cityname)     #How to change msg……
+    gname = 'imoyao'  # The group to send msg
+    msg = weather_msg(cityname)  # How to change msg……
     # print(msg)
     time_task(wx_sender, gname, msg)
 
