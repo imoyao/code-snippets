@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import json
 import requests
 import re
 import json
@@ -11,26 +12,65 @@ import traceback
 import schedule
 import itchat
 
-import citycode
-# http://www.jianshu.com/p/ab8d9e576ac4
+
+def city_info():
+    try:
+        with open('./cityinfo.json', 'r') as f:
+            code_str = json.load(f)
+        proviences = code_str['CityCode']
+        county_dict = {}
+        county_list = []
+        for pro in proviences:
+            cityList = pro['cityList']
+            for city in cityList:
+                countyList = city['countyList']
+                for county in countyList:
+                    name = county['name']
+                    code = county['code']
+                    county_dict[name] = code
+        return county_dict
+    except Exception as e:
+        traceback.print_exc()
+
+
+def get_code(cityname):
+    try:
+        result = {}
+        city = cityname.decode('utf-8')
+        county_dict = city_info()
+        if city in county_dict:
+            code = county_dict[city]
+            result['retcode'] = 1
+            result['data'] = code
+            result['msg'] = ''
+        else:
+            result['retcode'] = 0
+            result['data'] = None
+            result['msg'] = 'please check your enter.'
+        return result
+    except Exception as e:
+        traceback.print_exc()
 
 
 def city_url(cityname):
-    result = {}
-    baseurl = 'http://wthrcdn.etouch.cn/weather_mini?citykey='
-    ret = citycode.get_code(cityname)
-    if ret and ret['data']:
-        citykey = ret['data']
-        url = baseurl + citykey
-        result['data'] = url
-        result['code'] = 1
-        result['msg'] = ''
-    else:
-        res = ret['msg']
-        result['data'] = None
-        result['code'] = 0
-        result['msg'] = res
-    return result
+    try:
+        result = {}
+        baseurl = 'http://wthrcdn.etouch.cn/weather_mini?citykey='
+        ret = citycode.get_code(cityname)
+        if ret and ret['data']:
+            citykey = ret['data']
+            url = baseurl + citykey
+            result['data'] = url
+            result['code'] = 1
+            result['msg'] = ''
+        else:
+            res = ret['msg']
+            result['data'] = None
+            result['code'] = 0
+            result['msg'] = res
+        return result
+    except Exception as e:
+        traceback.print_exc()
 
 
 def get_forecast(url):
