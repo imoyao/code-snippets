@@ -56,7 +56,7 @@ def city_url(cityname):
     try:
         result = {}
         baseurl = 'http://wthrcdn.etouch.cn/weather_mini?citykey='
-        ret = citycode.get_code(cityname)
+        ret = get_code(cityname)
         if ret and ret['data']:
             citykey = ret['data']
             url = baseurl + citykey
