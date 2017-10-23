@@ -38,16 +38,18 @@ def get_code(cityname):
         result = {}
         city = cityname.decode('utf-8')
         county_dict = city_info()
-        if city in county_dict:
+        # print (county_dict)
+        if city in county_dict.keys():
             code = county_dict[city]
-            result['retcode'] = 1
-            result['data'] = code
-            result['msg'] = ''
-        else:
-            result['retcode'] = 0
-            result['data'] = None
-            result['msg'] = 'please check your enter.'
-        return result
+            return code
+        #     result['retcode'] = 1
+        #     result['data'] = code
+        #     result['msg'] = ''
+        # else:
+        #     result['retcode'] = 0
+        #     result['data'] = None
+        #     result['msg'] = 'please check your enter.'
+        # return result
     except Exception as e:
         traceback.print_exc()
 
@@ -56,19 +58,13 @@ def city_url(cityname):
     try:
         result = {}
         baseurl = 'http://wthrcdn.etouch.cn/weather_mini?citykey='
-        ret = get_code(cityname)
-        if ret and ret['data']:
-            citykey = ret['data']
+        citykey = get_code(cityname)
+        if citykey: 
             url = baseurl + citykey
             result['data'] = url
             result['code'] = 1
             result['msg'] = ''
-        else:
-            res = ret['msg']
-            result['data'] = None
-            result['code'] = 0
-            result['msg'] = res
-        return result
+            return result 
     except Exception as e:
         traceback.print_exc()
 
@@ -144,8 +140,8 @@ def weather_msg(cityname):
                 errmsg = info['data']
                 return errmsg
         else:
-            msg = url_ret['msg']
-            return msg
+            print('please check your enter.')
+            return None    #TODO
     except Exception as e:
         traceback.print_exc()
 
@@ -170,9 +166,10 @@ def time_task(jobname, *args):
         job_name = jobname.__name__
         # TODO:if err,try again.one more time,send msg to admin.
         if 'weather_msg' in job_name:
-            schedule.every().day.at("06:00").do(jobname, *args)
+            msg = schedule.every().day.at("17:58").do(jobname, *args).run()
+            return msg
         elif 'wx_sender' in job_name:
-            schedule.every().day.at("06:30").do(jobname, *args)
+            schedule.every().day.at("17:58").do(jobname, *args)
             # schedule.every(30).seconds.do(jobname, *args)
         elif job_name:
             schedule.every(5).seconds.do(jobname, *args)
@@ -209,9 +206,12 @@ def now_time():
 def main():
     cityname = raw_input('please enter the cityname:')
     gname = 'imoyao'  # The group to send msg
-    msg = weather_msg(cityname)  # How to change msg……
-    # print(msg)
-    time_task(wx_sender, gname, msg)
+    msg = time_task(weather_msg, cityname)
+    if msg:
+        time_task(wx_sender, gname, msg)
+    else:
+        errmsg = 'Get some err,pls connect admin.'
+        wx_sender(gname,errmsg)
 
 if __name__ == '__main__':
     main()
