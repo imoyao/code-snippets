@@ -166,10 +166,10 @@ def time_task(jobname, *args):
         job_name = jobname.__name__
         # TODO:if err,try again.one more time,send msg to admin.
         if 'weather_msg' in job_name:
-            msg = schedule.every().day.at("17:58").do(jobname, *args).run()
+            msg = schedule.every().day.at("06:00").do(jobname, *args).run()
             return msg
         elif 'wx_sender' in job_name:
-            schedule.every().day.at("17:58").do(jobname, *args)
+            schedule.every().day.at("06:30").do(jobname, *args)
             # schedule.every(30).seconds.do(jobname, *args)
         elif job_name:
             schedule.every(5).seconds.do(jobname, *args)
@@ -211,7 +211,7 @@ def main():
         time_task(wx_sender, gname, msg)
     else:
         errmsg = 'Get some err,pls connect admin.'
-        wx_sender(gname,errmsg)
+        time_task(wx_sender, gname, errmsg)
 
 if __name__ == '__main__':
     main()
