@@ -48,10 +48,10 @@ def noob_time(job_names, music_names):
 @time_it
 def intermediate_time(music_names, job_names):
     thread_lists = []
-    mus_th = threading.Thread(target=play_music, args=(music_names,))
-    thread_lists.append(mus_th)
-    job = threading.Thread(target=do_job, args=(job_names,))
-    thread_lists.append(job)
+    music_th = threading.Thread(target=play_music, args=(music_names,))
+    thread_lists.append(music_th)
+    job_th = threading.Thread(target=do_job, args=(job_names,))
+    thread_lists.append(job_th)
     print('time for entertaining...', time.time())
     for task in thread_lists:
         task.setDaemon(True)        # 设置为守护进程
