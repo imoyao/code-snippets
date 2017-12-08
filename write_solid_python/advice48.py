@@ -9,13 +9,15 @@ cost_time = 0
 
 def play_music(mu_names):
     for index, music in enumerate(mu_names):
-        print('For {0},I am playing music:{1} at {2}.'.format(index, music, time.time()))
+        print('For {0},I am playing music:{1} at {2}.'.format(
+            index, music, time.time()))
         time.sleep(1)
 
 
-def do_homework(hwk_names):
-    for index, homework in enumerate(hwk_names):
-        print('For {0},I am doing homework:{1} at {2}.'.format(index, homework, time.time()))
+def do_job(job_names):
+    for index, job in enumerate(job_names):
+        print('For {0},I am doing job:{1} at {2}.'.format(
+            index, job, time.time()))
         time.sleep(3)
 
 
@@ -26,47 +28,48 @@ def time_it(foo_func):
         res = foo_func(*args, **kwargs)
         end_time = time.time()
         cost_time = end_time-start_time
+        func_name = foo_func.__name__
         if not res:
-            return cost_time
-        return res, cost_time
+            return func_name, cost_time
+        return res, func_name, cost_time
     return wrapper
 
 
 @time_it
-def dos_time(mus_names, mvi_names):
-    print('time for homeworking...', time.time())
-    play_music(mus_names)
-    do_homework(mvi_names)
-    print('time for sleeping...', time.time())
+def noob_time(job_names, music_names):
+    print('time for working...', time.time())
+    do_job(job_names)
+    play_music(music_names)
+    print('time for Go-live...', time.time())
 
 #####################
 
 
 @time_it
-def couple_cpu_time(*args):
+def intermediate_time(music_names, job_names):
     thread_lists = []
-    mus_th = threading.Thread(target=play_music, args=(args[0],))
+    mus_th = threading.Thread(target=play_music, args=(music_names,))
     thread_lists.append(mus_th)
-    hwk_th = threading.Thread(target=do_homework, args=(args[1],))
-    thread_lists.append(hwk_th)
+    job = threading.Thread(target=do_job, args=(job_names,))
+    thread_lists.append(job)
     print('time for entertaining...', time.time())
     for task in thread_lists:
         task.setDaemon(True)        # 设置为守护进程
         task.start()
     # time.sleep(2)
     task.join()
-    print('time for sleeping...', time.time())
+    print('time for Go-live...', time.time())
 
 
 if __name__ == '__main__':
 
-    mus_name_lists = ['山丘', '麦克', '历历万乡']
-    homework_lists = ['数学', '语文', 'English']
-    cost_time1 = dos_time(mus_name_lists, homework_lists)
-    print('Do things one by one cost:{0}'.format(cost_time1))
+    music_lists = ['山丘', '同桌的你', '历历万乡']
+    job_lists = ['Program', 'Edit_Document', 'Debug']
+    foo_name, noob_time = noob_time(job_lists, music_lists)
+    print('Do things one by one({0}) cost:{1}'.format(foo_name, noob_time))
 
     print('====== use threading ======')
+    time.sleep(1)
 
-    tasks = (mus_name_lists, homework_lists)
-    cost_time2 = couple_cpu_time(*tasks)
-    print('Do things together cost:{0}'.format(cost_time2))
+    bar_name, inter_time = intermediate_time(music_lists, job_lists)
+    print('Do things together({0}) cost:{1}'.format(bar_name, inter_time))
