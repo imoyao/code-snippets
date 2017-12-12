@@ -4,6 +4,7 @@
 import os
 import time
 
+
 def walk_dir(dir_path,file_type_list):
     filelist = []
     for parent, dirnames, filenames in os.walk(dir_path):
@@ -11,6 +12,7 @@ def walk_dir(dir_path,file_type_list):
             if file and file.split(".")[-1] in file_type_list:
                 filelist.append(os.path.join(parent,file))
     return filelist
+
 
 def count_file_line(file_name):
     count = 0
@@ -24,6 +26,7 @@ def count_file_line(file_name):
         return count
     except Exception as e:
         raise e
+
 
 def main():
     start_time = time.time()
@@ -62,6 +65,7 @@ def main():
     cost_time = time.time() - start_time
     result = {"retcode": retcode, "total": total, "ctime": cost_time, "messg": messg}
     return result
+
 
 if __name__ == '__main__':
     ret = main()
