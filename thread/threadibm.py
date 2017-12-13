@@ -7,9 +7,9 @@ import urllib2
 import Queue
 
 
-class SayHelloThread(threading.Thread):
-    def run(self):
-        print('{0} says hello at {1}'.format(self.name, time.time()))
+# class SayHelloThread(threading.Thread):
+#     def run(self):
+#         print('{0} says hello at {1}'.format(self.name, time.time()))
 
 
 def get_url_item(hosts):
@@ -35,31 +35,29 @@ class DownloadThread(threading.Thread):
 
         while True:
             url = self.queue.get()
-            self.download_and_write_file(url)
+            html = download_file(url)
+            html_queue.put(html)
+            # print('#########', html_queue.qsize())
             self.queue.task_done()
+            # html_queue.task_done()
+
         print('write finished.\n')
 
 
-    def download_and_write_file(self, url):
-        headers = {'User-agent': 'Mozilla/5.0 (Windows NT 6.2; WOW64; rv:22.0) Gecko/20100101 Firefox/22.0'}
-        request = urllib2.Request(url, headers=headers)
-        page_detail = urllib2.urlopen(request)
-        tmp = page_detail.read(1024)
-        if tmp:
-            write_f(data)
-        # with open('result.txt', 'wb') as f:
-        #     tmp = page_detail.read(1024)
-        #     if tmp:
-        #         f.write(tmp)
-        #         f.write('\n################\n')
+def download_file(url):
+    print('spider start to {0} at {1}'.format(url, time.time()))
+    headers = {'User-agent': 'Mozilla/5.0 (Windows NT 6.2; WOW64; rv:22.0) Gecko/20100101 Firefox/22.0'}
+    request = urllib2.Request(url, headers=headers)
+    page_detail = urllib2.urlopen(request)
+    # tmp = page_detail.read(1024) + '\n################\n'
+    tmps = page_detail.read(1024)
+    # print(type(tmps))
+    write_text = '\n'.join([line.strip() for line in tmps.split('\n') if line.strip()]) + '\n#####\n'   # 去除whitespace
+    # print(write_text)
+    return write_text
 
 
-def write_f(data):
-    with open('result.txt', 'wb') as f:
-        f.write(data)
-
-
-def main(hosts):
+def get_html(hosts):
     start_time = time.time()
     queue = Queue.Queue()
     for i in range(5):
@@ -75,8 +73,44 @@ def main(hosts):
     print('thread_queue use {0}'.format(use_time))
 
 
+class WriteFileThread(threading.Thread):
+
+    def __init__(self, txtFile):
+        threading.Thread.__init__(self)
+        # self.queue = th_queue
+        self.wf_name = txtFile
+
+    def run(self):
+        mutex.acquire(1)
+        with open(self.wf_name, 'a') as f:
+            # print('###########', self.queue.qsize())
+            # data = self.queue.get()
+            data = html_queue.get()
+            print('********', data)
+            f.write(data)
+        mutex.release()
+
+        print('write finished.\n')
+
+
+def write_file(txtFile):
+    html_queue = Queue.Queue()
+
+    for i in range(10):
+        write_th = WriteFileThread(txtFile)
+        write_th.setDaemon(True)
+        write_th.start()
+
+    html_queue.join()
+    write_th.join()
+
+
 if __name__ == '__main__':
+    html_queue = Queue.Queue()
     # if：urllib2.URLError: <urlopen error [Errno 10054] >  try to change urls
     hosts = ['https://www.baidu.com', 'https://www.zhihu.com', 'https://www.sougou.com', 'https://www.so.com']
-    main(hosts)
-    # get_url_item(urls)
+    get_html(hosts)
+    txtFile = 'wftest.txt'
+    mutex = threading.Lock()
+    write_file(txtFile)
+
