@@ -128,7 +128,6 @@ def main():
     params['path'] = fp
     retinfos = get_dir_info(params)
     sizefinfos = dict()
-    md5fpinfos = dict()
     deldatas = dict()
     delinfos = list()
     total_count = 0
@@ -143,10 +142,7 @@ def main():
             filename = item['name']
             filesize = get_file_size(filepath)
             name_and_md5 = {'name': filename, 'md5': ''}
-            # sizefinfos[filesize] = filepath
-            # print '======{0}'.format(sizefinfos)
             if filesize in sizefinfos.keys():       # 若文件size相同则比对其md5
-                # 若文件相同，则大小必然相等，但大小相等，不一定为同一文件
                 filemd5 = get_md5(filepath)
                 if not sizefinfos[filesize]['md5']:
                     sizefinfos[filesize]['md5'] = filemd5
@@ -159,7 +155,7 @@ def main():
                     sizefinfos[filesize]['md5'] = filemd5
             else:
                 sizefinfos[filesize] = name_and_md5
-
+        # print('######1111111#####{0}'.format(deldatas))
         return deldatas, total_count, del_count
 
 
@@ -201,7 +197,7 @@ def mymain():
             continue
         delitem = []
         ret = json.dumps(fileinfos)
-        print('######1111111#####{0}'.format(ret))
+        # print('######1111111#####{0}'.format(ret))
         for k, val in fileinfos.items():
             md5_count = len(val)
             if md5_count > 1:
@@ -215,23 +211,18 @@ def mymain():
                 continue
             '''
     delinfos = json.dumps(delitem)       # 需删除条目
-    # print('########111####{0},len:{1}'.format(res, count))
+    # print('########111####{0},len:{1}'.format(delinfos, del_count))
     return delinfos, total_count, del_count
 
 
-def size_filter():
-    if len(sys.argv) > 1:
-        fp = sys.argv[1]
-    else:
-        fp = current_path
-    params = dict()
-    params['path'] = fp
-    retinfos = get_dir_info(params)
-    fileinfos = dict()
+def size_filter(allfileinfos):
+    """
+    根据文件大小分组
+    :param allfileinfos: file info lists
+    :return: file path list
+    """
     total_count = 0
-    del_count = 0
-    if retinfos and retinfos['state'] == '0':
-        allfileinfos = retinfos['result']
+    fileinfos = dict()
     if allfileinfos:
         for item in allfileinfos:
             total_count += 1
@@ -239,26 +230,162 @@ def size_filter():
             size = get_file_size(fp)
             filedatas = dict()
             filedatas['path'] = fp
-            # filedatas['id'] = item['id']
             if size not in fileinfos:
                 fileinfos[size] = [filedatas]
                 # pass
             else:
                 fileinfos[size].append(filedatas)
             continue
-        ilksizedatas = [item['path'] for i in fileinfos.items() if len(i[1]) > 1 for item in i[1]]  # 过滤size唯一值file
+        ilksizedatas = [item['path'] for i in fileinfos.items() if len(i[1]) > 1 for item in i[1]]  # 过滤掉size唯一值file
         # size_ret = json.dumps(fileinfos)
-    return ilksizedatas, total_count
+        return ilksizedatas, total_count
 
+
+def md5_filter(dirid=None, aftersizedatas=None):
+    """
+    :param dirid: 文件夹编号 现为文件编号，唯一值，作为删除文件标识使用 TODO:对比多个文件夹时可作为参数
+    :param aftersizedatas: 文件路径列表 list
+    :return: MD5过滤之后的文件信息 json
+    """
+    fileinfos = dict()
+    id_num = dirid if dirid else '0'
+    filenum = 0
+    if aftersizedatas:
+        for fpitem in aftersizedatas:
+            filemd5 = get_md5(fpitem)
+            createdate = get_file_date(fpitem)
+            size = get_file_size(fpitem)
+            filedatas = dict()
+            filedatas['path'] = fpitem
+            filenum += 1
+            filedatas['id'] = '{0}_{1}'.format(id_num, str(filenum))
+            filedatas['create'] = createdate
+            filedatas['size'] = size
+            if filemd5 not in fileinfos:
+                fileinfos[filemd5] = [filedatas]
+            else:
+                fileinfos[filemd5].append(filedatas)
+            continue
+        return fileinfos
+
+
+def get_all_files():
+    if len(sys.argv) > 1:
+        fp = sys.argv[1]
+    else:
+        fp = current_path   # 获取用户输入文件夹名称，缺省为当前程序所在文件夹
+    params = dict()
+    params['path'] = fp
+    retinfos = get_dir_info(params)     # 获取文件夹下文件信息
+    # if retinfos and retinfos['state'] == '0':
+    #     allfileinfos = retinfos['result']
+    # else:
+    #     rtndata['state'] = '1'
+    #     result['message'] = 'get dirinfo failed'
+    #     rtndata['result'] = result
+    return retinfos
+
+
+@time_it
+def showdouble():
+    rtndata = dict()
+    result = dict()
+    delinfos = list()
+    total_count = 0
+    retinfos = get_all_files()
+    if retinfos and retinfos['state'] == '0':
+        allfileinfos = retinfos['result']
+    else:
+        rtndata['state'] = '1'
+        result['message'] = 'get dirinfo failed'
+        rtndata['result'] = result
+    # 获取文件夹信息结束
+    # 判重开始
+    # 若文件相同，则size必然相等，但大小相等，不一定为同一文件
+    if allfileinfos:
+        size_ret = size_filter(allfileinfos)
+    else:
+        rtndata['state'] = '1'
+        result['message'] = 'get dirinfo failed'
+        rtndata['result'] = result
+    if size_ret:
+        ilksizedatas = size_ret[0]
+        total_count = size_ret[1]
+    else:
+        rtndata['state'] = '1'
+        result['message'] = 'no same files by size'
+        rtndata['result'] = result
+        # return rtndata
+    # 按照MD5分组
+    if ilksizedatas:
+        after_md5_datas = md5_filter(aftersizedatas=ilksizedatas)
+    else:
+        rtndata['state'] = '1'
+        result['message'] = 'no same files by md5'
+        rtndata['result'] = result
+        # return rtndata
+    # MD5过滤结束
+    if after_md5_datas:
+        del_count = 0
+        delitems = list()
+        # ret = json.dumps(after_md5_datas)
+        # print('######1111111#####{0}'.format(ret))
+        for k, val in after_md5_datas.items():      # 判重，MD5值出现次数大于1，则为重复文件
+            md5_count = len(val)
+            if md5_count > 1:
+                del_count += 1
+                delitems.append(val)
+        # delinfos = json.dumps(delitem)          # 需删除条目
+        rtndata['state'] = '0'
+        result['message'] = ''
+        result['delinfos'] = delitems
+        result['total_count'] = total_count
+        result['del_count'] = del_count
+        rtndata['result'] = result
+        # return rtndata
+    else:
+        rtndata['state'] = '1'
+        result['message'] = 'not same files after all'
+        rtndata['result'] = result
+    return rtndata
+'''
+文件名是中文时，显示问题；
+整体按大小排序，内部按时间排序 OrderedDict；
+根据用户输入id进行文件删除；
+
+from findtools.find_files import (find_files, Match)
+
+path='/Users/apple/node/test'
+found_files = find_files(path)
+
+for found_file in found_files:
+print found_file
+newname=found_file.replace('str1','')
+os.rename(os.path.join(path,found_file),os.path.join(path,newname))
+'''
 
 if __name__ == '__main__':
-    sizeinfos = size_filter()
-    print(sizeinfos)
-    print "*" * 20
-    ret = main()
-    print(ret)
-    print "*"*20
-    res = mymain()
-    print(res)
+    # sizeinfos = main()
+    # print(sizeinfos[0][1:], sizeinfos[2])
+    # print "*" * 20
+
+    ret = showdouble()
+    retdatas = ret[0]
+    if retdatas and retdatas['state'] == '0':
+        total_count = retdatas['result']['total_count']
+        del_count = retdatas['result']['del_count']
+        del_files = retdatas['result']['delinfos']
+        print('''total files counts:{0};
+double files numbers:{1};
+        '''.format(total_count, del_count))
+    if del_files:
+        for item in del_files:
+            print "#" * 10
+            print(item)
+
+    # print "*"*20
+    #
+    # res = mymain()
+    # print(res[0][1:], res[2])
 
 

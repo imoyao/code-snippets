@@ -19,6 +19,8 @@ import settings
 
 
 cost_time = 0
+
+
 def time_it(func):
     def wrapper(*args, **kwargs):
         global cost_time
