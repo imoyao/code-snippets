@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os
-import sys
+# import sys
 import time
 import json
 import hashlib
+import sys
+# reload(sys)
+# sys.setdefaultencoding("utf-8")
 
 '''
 http://www.sharejs.com/codes/python/7142
@@ -30,6 +33,18 @@ cost_time = 0
 '''
 
 
+def get_fp():
+    """
+    获取用户输入文件夹名称，缺省为当前程序所在文件夹
+    :return: a str with dirname
+    """
+    if len(sys.argv) > 1:
+        fp = sys.argv[1]
+    else:
+        fp = current_path
+    return fp
+
+
 def get_dir_info(params=None):      # TODO:os.walk()
     if not params:
         params = dict()
@@ -53,35 +68,22 @@ def get_dir_info(params=None):      # TODO:os.walk()
                     pass
                 filenum += 1
                 childnode['id'] = '{0}_{1}'.format(id_num, str(filenum))
+                # childnode['name'] = f.decode('utf-8')
                 childnode['name'] = f
+                # childnode['path'] = os.path.join(fp, f).decode('utf-8')
                 childnode['path'] = os.path.join(fp, f)
+                # print(childnode['path'])
                 childnodes.append(childnode)
     # print childnodes
     rtndata['state'] = '0'
+    # print(childnodes)
     rtndata['result'] = childnodes
     return rtndata
 
 
-def get_md5(filename):
-    with open(filename,'rb') as f:
-        md5_val = hashlib.md5()
-        while True:
-            data = f.read(2048)
-            if not data:
-                break
-            md5_val.update(data)
-        return md5_val.hexdigest()
-
-
-def get_file_size(fp):
-    if os.path.exists(fp) and os.path.isfile(fp):
-        f_size = os.path.getsize(fp)
-    return f_size
-
-
 def get_file_date(fp):
     """
-    get file create date info
+    get file create date
     :param fp: str file path
     :return: timestamp
     """
@@ -104,6 +106,23 @@ def timestamp2strftime(timestamp):
     return str_time
 
 
+def get_file_size(fp):
+    if os.path.exists(fp) and os.path.isfile(fp):
+        f_size = os.path.getsize(fp)
+    return f_size
+
+
+def get_md5(filename):
+    with open(filename,'rb') as f:
+        md5_val = hashlib.md5()
+        while True:
+            data = f.read(2048)
+            if not data:
+                break
+            md5_val.update(data)
+        return md5_val.hexdigest()
+
+
 def time_it(foo_func):
     def wrapper(*args, **kwargs):
         global cost_time
@@ -120,10 +139,7 @@ def time_it(foo_func):
 
 @time_it
 def main():
-    if len(sys.argv) > 1:
-        fp = sys.argv[1]
-    else:
-        fp = current_path
+    fp = get_fp()
     params = dict()
     params['path'] = fp
     retinfos = get_dir_info(params)
@@ -270,13 +286,11 @@ def md5_filter(dirid=None, aftersizedatas=None):
 
 
 def get_all_files():
-    if len(sys.argv) > 1:
-        fp = sys.argv[1]
-    else:
-        fp = current_path   # 获取用户输入文件夹名称，缺省为当前程序所在文件夹
+    fp = get_fp()
     params = dict()
     params['path'] = fp
     retinfos = get_dir_info(params)     # 获取文件夹下文件信息
+    # print(retinfos)
     # if retinfos and retinfos['state'] == '0':
     #     allfileinfos = retinfos['result']
     # else:
@@ -286,10 +300,11 @@ def get_all_files():
     return retinfos
 
 
-@time_it
-def showdouble():
+# @time_it
+def getdouble():
     rtndata = dict()
     result = dict()
+    after_md5_datas = dict()
     delinfos = list()
     total_count = 0
     retinfos = get_all_files()
@@ -325,6 +340,7 @@ def showdouble():
         rtndata['result'] = result
         # return rtndata
     # MD5过滤结束
+    # print(after_md5_datas)
     if after_md5_datas:
         del_count = 0
         delitems = list()
@@ -348,10 +364,27 @@ def showdouble():
         result['message'] = 'not same files after all'
         rtndata['result'] = result
     return rtndata
+
+
+def showdouble():
+    retdatas = getdouble()
+    if retdatas and retdatas['state'] == '0':
+        total_count = retdatas['result']['total_count'] or None
+        del_count = retdatas['result']['del_count'] or None
+        del_files = retdatas['result']['delinfos'] or None
+    else:
+        res = retdatas['result']['message']
+        print(res)
+        sys.exit(1)
+    return total_count, del_count, del_files
+
 '''
-文件名是中文时，显示问题；
-整体按大小排序，内部按时间排序 OrderedDict；
-根据用户输入id进行文件删除；
+# 文件名是中文时，显示问题；
+整体按大小排序，内部按时间排序 OrderedDict；    
+see:
+https://www.zhihu.com/question/50391422
+http://blog.csdn.net/xiaminli/article/details/73381600
+根据用户输入id进行文件删除,缺省删除
 
 from findtools.find_files import (find_files, Match)
 
@@ -369,19 +402,23 @@ if __name__ == '__main__':
     # print(sizeinfos[0][1:], sizeinfos[2])
     # print "*" * 20
 
-    ret = showdouble()
-    retdatas = ret[0]
-    if retdatas and retdatas['state'] == '0':
-        total_count = retdatas['result']['total_count']
-        del_count = retdatas['result']['del_count']
-        del_files = retdatas['result']['delinfos']
-        print('''total files counts:{0};
-double files numbers:{1};
-        '''.format(total_count, del_count))
+    total_count, del_count, del_files = showdouble()
+
+    print('''total files counts:{0};            # 总文件数
+double files groups:{1};'''.format(total_count, del_count))     # 重复组
     if del_files:
+        print('Those are duplicate files we found:')
         for item in del_files:
-            print "#" * 10
-            print(item)
+            item.sort(key=lambda x: x['create'])        # 对itemfile按照创建时间排序
+            for fileinfo in item:
+                print('id:{id}, size:{size}, create:{create}, path:{path}'.format(id=fileinfo['id'],
+                                                                               size=fileinfo['size'],
+                                                                               create=fileinfo['create'],
+                                                                               path=fileinfo['path']))
+            print "-" * 20
+    else:
+        res = retdatas['result']['message']
+        print(res)
 
     # print "*"*20
     #

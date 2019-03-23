@@ -213,5 +213,6 @@ def main():
         errmsg = 'Get some err,pls connect admin.'
         time_task(wx_sender, gname, errmsg)
 
+
 if __name__ == '__main__':
     main()

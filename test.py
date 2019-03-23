@@ -1,9 +1,49 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import traceback
 
 
+class People(object):
+    def __init__(self, name, tml, tmjl, tcl, cvr):
+        self.name = name
+        self.tml = tml
+        self.tmjl = tmjl
+        self.tcl = tcl
+        self.covariances = cvr
+
+    def predict(self, control_data):
+        try:
+            self.name = self.tml(self.name, control_data)
+            F = self.tmjl(self.name, control_data)
+            self.covariances = '{0},{1},{2}'.format(self.covariances, F, self.tcl(control_data))
+            return self.covariances
+        except Exception as e:
+            traceback.print_exc()
 
 
+# 定义了3个callable的方法，以替代原方法中的transition_means_lambda, transition_means_jacobi_lambda, transition_covariances_lambda参数
+def tml(name, c_d):
+    print('8888', name)
+    print(c_d+"123")
+    return hasattr(object,"__call__")
+
+
+def tcl(c_d):
+    print(c_d+"1a1")
+    return hasattr(object,"__call__")
+
+
+def tmjl(name, c_d):
+    print('ccc', name)
+    print("aaa"+c_d)
+    return hasattr(object,"__call__")
+
+
+if __name__ == '__main__':
+    pp = People('Tom', tml, tmjl, tcl, 'baz')
+    pp.predict('learn_python')
+    res = pp.predict('learn_python')
+    print res
 
 
 
