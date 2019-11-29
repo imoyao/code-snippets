@@ -8,7 +8,7 @@ def callback(ch, method, properties, body):
     print(f"Received {body}")
 
 
-def customer():
+def consumer():
     pika_param = pika.ConnectionParameters(host='localhost')
     connection = pika.BlockingConnection(pika_param)
     channel = connection.channel()
@@ -20,4 +20,4 @@ def customer():
 
 
 if __name__ == '__main__':
-    customer()
+    consumer()
