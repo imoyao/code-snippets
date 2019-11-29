@@ -19,7 +19,7 @@ def recviver():
         # queue=''生成随机临时queue，exclusice=True标识一旦适用房连接关闭，则立即删除队列
         result = channel.queue_declare(queue='', exclusive=True)
         queue_name = result.method.queue
-        channel.queue_bind(exchange='logs', queue=queue_name)  # 绑定
+        channel.queue_bind(exchange='logs', queue=queue_name)  # exchange 绑定 queue
         print('[*] Waiting for messages. To exit press CTRL+C.')
         channel.basic_consume(queue=queue_name, on_message_callback=callback, auto_ack=True)
         channel.start_consuming()

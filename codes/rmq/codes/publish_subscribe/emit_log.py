@@ -8,7 +8,7 @@ import sys
 
 def emitter():
     """
-
+    发布者将消息给exchange，然后exchange分发给订阅者
     :return:
     """
     with pika.BlockingConnection(pika.ConnectionParameters(host='localhost')) as connection:
