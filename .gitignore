@@ -1,0 +1,32 @@
+### Python ###
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# PyCharm
+.idea/
+
+# Translations
+*.mo
+*.pot
+
+# user exclude
+memo.md
+
+.DS_Store
+node_modules/
+front/dist/
+front/dist.zip
+front/npm-debug.log*
+front/yarn-debug.log*
+front/yarn-error.log*
+front/test/unit/coverage/
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln

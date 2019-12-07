@@ -43,7 +43,7 @@ if __name__ == '__main__':
     pp = People('Tom', tml, tmjl, tcl, 'baz')
     pp.predict('learn_python')
     res = pp.predict('learn_python')
-    print res
+    print(res)
 
 
 
