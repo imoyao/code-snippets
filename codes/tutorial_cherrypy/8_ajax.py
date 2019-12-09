@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Created by imoyao at 2019/12/9 10:17
+"""
+https://docs.cherrypy.org/en/latest/tutorials.html#id11
+"""
 import os
 import random
 import string
