@@ -21,7 +21,7 @@ class StringGen:
     def index(self):
         return open('templates/10index.html')
 
-    @cherrypy.expose
+    @cherrypy.expose(['pong','bing'])
     def ping(self):
         with sqlite3.connect(DB_NAME) as connector:
             # 由于sqlite禁止线程之间共享连接，而cherrypy是多线程服务器，所以每次调用都要使用with打开和关闭数据库连接，此处仅为演示，建议使用SQLAlchemy
