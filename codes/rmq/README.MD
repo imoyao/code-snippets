@@ -17,7 +17,13 @@ Python 3.7.3
 CentOS Linux release 7.6.1810 (Core) 
 ```
 ## 目录
-[Hello World](codes/hello_world/)
-参考
+- [Hello World](codes/hello_world/)
+- [Work queues](codes/work_queue/)
+- [Publish/Subscribe](codes/publish_subscribe/)
+- [Routing](codes/routing/)
+- [Topics](codes/topics/)
+- [RPC](codes/rpc/)
+
+## 参考
 1. [RabbitMQ Tutorials](https://www.rabbitmq.com/getstarted.html)
 2. [RabbitMQ Documentation](https://www.rabbitmq.com/documentation.html)

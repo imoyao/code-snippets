@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Created by imoyao at 2019/11/28 11:20
 """
-see also:https://s0www0rabbitmq0com.icopy.site/tutorials/tutorial-two-python.html
+see also:https://www.rabbitmq.com/tutorials/tutorial-two-python.html
 """
 import time
 import pika
