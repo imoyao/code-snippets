@@ -6,8 +6,6 @@
 '''
 import time
 import collections
-import sys
-import timeit
 
 import numpy as np
 

@@ -31,22 +31,42 @@ def split_list(alist, split_len):
     return b
 
 
-def make_four_column(data):
+def make_four_column(data, column_num=4):
     """
-    返回 4 列数据
+    返回 column_num 列数据
     :param data:
+    :param column_num:
     :return:
     """
+
+    def append_item(seq, _item, index):
+        try:
+            item_in = _item[index]
+            # if not item_in:
+            #     item_in = {"name": "", "num": None, "state": False}
+
+        except IndexError:
+            # item_in = {"name": "", "num": None, "state": False}
+            item_in = {}
+        seq.append(item_in)
+
+        return seq
+
     a = []
     b = []
     c = []
     d = []
-    print(data)
+
     for item in data:
-        a.append(item[0])
-        b.append(item[1])
-        c.append(item[2])
-        d.append(item[3])
+        for i in range(column_num):
+            if i == 0:
+                a = append_item(a, item, 0)
+            elif i == 1:
+                b = append_item(b, item, 1)
+            elif i == 2:
+                c = append_item(c, item, 2)
+            elif i == 3:
+                d = append_item(d, item, 3)
     return [a[::-1], b[::-1], c[::-1], d[::-1]]
 
 
@@ -98,8 +118,21 @@ def main(iter_len, column_num):
     :return:
     """
     alist = make_iter(iter_len)
-    print(alist)
-    d1 = split_list(alist, column_num)
+    # print(alist)
+    alist = [{'name': 'sd0', 'num': 0, 'state': True}, {'name': 'sd1', 'num': 1, 'state': False},
+             {},
+             {},
+             {},
+             {'name': 'sd8', 'num': 8, 'state': True}, {'name': 'sd9', 'num': 9, 'state': False},
+             {},
+             {'name': 'sd12', 'num': 12, 'state': True}, {'name': 'sd13', 'num': 13, 'state': False},
+             {'name': 'sd14', 'num': 14, 'state': True}, {'name': 'sd15', 'num': 15, 'state': False},
+             {},
+             {'name': 'sd18', 'num': 18, 'state': True}, {'name': 'sd19', 'num': 19, 'state': False},
+             {'name': 'sd20', 'num': 20, 'state': True}, {'name': 'sd21', 'num': 21, 'state': False},
+             {}]
+
+    d1 = slice_list(alist, column_num)
     t1 = make_four_column(d1)
     data = {'info': t1}
     return json.dumps(data)
@@ -117,13 +150,14 @@ if __name__ == '__main__':
     #                    setup="from __main__ import split_list, a,num", number=1000)
     # t2 = timeit.timeit(stmt="list_of_groups(a, num)",
     #                    setup="from __main__ import list_of_groups, a,num", number=1000)
-    a = list(range(24))
-    num = 4
-    t1 = split_list(a, num)
-    t2 = list_of_groups(a, num)
-    t3 = slice_list(a, num)
-    t4 = zip_iter(a, num)
-    print(t1)
-    print(t2)
-    print(t3)
-    print(t4)
+    # a = list(range(2))
+    # num = 4
+    # t1 = split_list(a, num)
+    # t2 = list_of_groups(a, num)
+    # t3 = slice_list(a, num)
+    print(main(24, 4), '--------')
+    # t4 = zip_iter(a, num)
+    # print(t1)
+    # print(t2)
+    # print(t3)
+    # print(t4)
