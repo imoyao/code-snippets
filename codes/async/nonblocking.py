@@ -7,6 +7,7 @@ import time
 
 def non_blocking_way():
     sock = socket.socket()
+    # https://docs.python.org/zh-cn/3/library/socket.html#socket.socket.setblocking
     sock.setblocking(False)
     try:
         sock.connect(('example.com', 80))
