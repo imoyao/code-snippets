@@ -4,6 +4,7 @@
 import socket
 import time
 from concurrent import futures
+from functools import wraps
 
 REQ_DOMAIN = 'example.com'
 cost_time = 0
@@ -76,17 +77,77 @@ def thread_way():
     return len([fut.result() for fut in futs])
 
 
+def threadpool_deco(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        print(args, '#############')
+        ret = []
+        with futures.ThreadPoolExecutor(10) as executor:
+            for item in args[0]:
+                exc = executor.submit(func, item, **kwargs)
+                ret.append(exc.result())
+            # futures.wait(all_task, return_when=futures.ALL_COMPLETED)
+        return ret
+
+    return wrapper
+
+
+def bar(item, is_test=True):  # TODO: 没有起到线程池的作用
+    print(item, '-------123------')
+    time.sleep(item)
+    if is_test:
+        num = 5
+    else:
+        num = 100
+    return item + num
+
+
+def threadpoolit(args, **kwargs):
+    ret = []
+    with futures.ThreadPoolExecutor(10) as executor:
+        for item in args:
+            exc = executor.submit(bar, item, **kwargs)
+            ret.append(exc.result())
+        # futures.wait(all_task, return_when=futures.ALL_COMPLETED)
+    return ret
+
+
+# @time_it
+@threadpool_deco
+def foo(item, is_test=True):  # TODO: 没有起到线程池的作用
+    print(item, '-------------')
+    time.sleep(item)
+    if is_test:
+        num = 5
+    else:
+        num = 100
+    return item + num
+
+
 def main():
-    a = sync_way()
-    print(a)
-    b = thread_way()
-    print(b)
-    c = process_way()
-    print(c)
+    # a = sync_way()
+    # print(a)
+    # b = thread_way()
+    # print(b)
+    # c = process_way()
+    # print(c)
+    a = list(range(5))
+    a1 = time.time()
+    rettt = threadpoolit(a, is_test=True)
+    aa1 = time.time()
+    print(aa1 - a1, f'----{rettt}---------')
 
 
-# if __name__ == '__main__':
-#     main()
+
+    t = time.time()
+
+    d = foo(a, is_test=True)
+    t1 = time.time()
+    print(t1 - t, d)
+
+
+if __name__ == '__main__':
+    main()
 
 """
 # count = 10
