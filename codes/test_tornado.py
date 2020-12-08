@@ -1,13 +1,12 @@
 # coding:utf-8
+import json
+import os
 
 import tornado.web
 import tornado.ioloop
 import tornado.httpserver
 import tornado.options
-import json
-import os
 import torndb
-
 from tornado.web import RequestHandler, url, StaticFileHandler
 from tornado.options import define, options
 

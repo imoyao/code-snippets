@@ -7,38 +7,46 @@
 # 世纪年能被400整除的是闰年。(如2000年是闰年，1900年不是闰年)
 
 class IntError(Exception):
-    '''自定义一个异常int类'''
+    """自定义一个异常int类"""
+
     def __init__(self, value):
         Exception.__init__(self)
         self.value = value
+
 
 class InputError(Exception):
-    '''自定义一个异常input类'''
+    """自定义一个异常input类"""
+
     def __init__(self, value):
         Exception.__init__(self)
         self.value = value
 
-input_str = raw_input("please enter a valid date(2017-06-04): ")
 
 def check_input(intnum):
     if not intnum.isdigit():
         raise InputError(intnum)
-    elif not isinstance(int(intnum),int):
+    elif not isinstance(int(intnum), int):
         raise IntError(intnum)
 
-for temp in input_str.split('-'):
-	print temp
-	try:
-		check_input(temp)
-	except InputError, foo:
-		print "Input err,{} is not a valid input.".format(foo.value)
-	except IntError, foo:
-		print "int err!pls check the num {}.".format(foo.value)
-	except Exception as e:
-		raise e
-	# else:
-	# 	return (year, mon, day)
 
+def main():
+    input_str = input("please enter a valid date(2017-06-04): ")
+    for temp in input_str.split('-'):
+        print(temp)
+        try:
+            check_input(temp)
+        except InputError as foo:
+            print("Input err,{} is not a valid input.".format(foo.value))
+        except IntError as bar:
+            print("int err!pls check the num {}.".format(bar.value))
+        except Exception as e:
+            raise e
+
+
+if __name__ == '__main__':
+    main()
+# else:
+# 	return (year, mon, day)
 
 # try:
 # 	year = raw_input("please enter an integer for year: ")
