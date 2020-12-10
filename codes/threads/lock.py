@@ -31,13 +31,14 @@ class FetchUrls(threading.Thread):
             except urllib.error.URLError as e:
                 print(('URL %s failed: %s' % (url, e.reason)))
             if d:
-                content = str(d.read(), encoding="utf8")
-                print(f'lock acquired by {self.name}')
+                # 自动管理锁
                 with self.lock:
+                    print(f'lock acquired by {self.name}')
+                    content = str(d.read(), encoding="utf8")
                     self.output.write(content)
                     print('write done by %s' % self.name)
                     print('URL %s fetched by %s' % (url, self.name))
-                print(f'lock release by {self.name}')
+                    print(f'lock release by {self.name}')
 
 
 def main():
