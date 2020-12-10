@@ -137,8 +137,6 @@ def main():
     aa1 = time.time()
     print(aa1 - a1, f'----{rettt}---------')
 
-
-
     t = time.time()
 
     d = foo(a, is_test=True)

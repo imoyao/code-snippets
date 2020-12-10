@@ -18,7 +18,7 @@ class WriteFileThread(threading.Thread):
         mutex.acquire(1)
         data = write_data + str(i) + '\n'
         write_f(wf_name, data)
-        print('{name} write text: {data}'.format(name=self.name, data=data))
+        print(('{name} write text: {data}'.format(name=self.name, data=data)))
         mutex.release()
 
 

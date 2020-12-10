@@ -3,8 +3,9 @@
 
 import threading
 import time
-import urllib2
-import Queue
+
+from queue import Queue
+import urllib.request, urllib.error, urllib.parse
 
 
 # class SayHelloThread(threading.Thread):
@@ -17,12 +18,12 @@ def get_url_item(hosts):
     headers = {'User-agent': 'Mozilla/5.0 (Windows NT 6.2; WOW64; rv:22.0) Gecko/20100101 Firefox/22.0'}
 
     for url in hosts:
-        print('spider start to {0}'.format(url))
-        request = urllib2.Request(url, headers=headers)
-        page_detail = urllib2.urlopen(request)
-        print(page_detail.read(1024))
-    use_time = time.time()-start_time
-    print('single use {0}'.format(use_time))
+        print(('spider start to {0}'.format(url)))
+        request = urllib.request.Request(url, headers=headers)
+        page_detail = urllib.request.urlopen(request)
+        print((page_detail.read(1024)))
+    use_time = time.time() - start_time
+    print(('single use {0}'.format(use_time)))
 
 
 class DownloadThread(threading.Thread):
@@ -32,7 +33,6 @@ class DownloadThread(threading.Thread):
         self.queue = th_queue
 
     def run(self):
-
         while True:
             url = self.queue.get()
             html = download_file(url)
@@ -45,21 +45,21 @@ class DownloadThread(threading.Thread):
 
 
 def download_file(url):
-    print('spider start to {0} at {1}'.format(url, time.time()))
+    print(('spider start to {0} at {1}'.format(url, time.time())))
     headers = {'User-agent': 'Mozilla/5.0 (Windows NT 6.2; WOW64; rv:22.0) Gecko/20100101 Firefox/22.0'}
-    request = urllib2.Request(url, headers=headers)
-    page_detail = urllib2.urlopen(request)
+    request = urllib.request.Request(url, headers=headers)
+    page_detail = urllib.request.urlopen(request)
     # tmp = page_detail.read(1024) + '\n################\n'
     tmps = page_detail.read(1024)
     # print(type(tmps))
-    write_text = '\n'.join([line.strip() for line in tmps.split('\n') if line.strip()]) + '\n#####\n'   # 去除whitespace
+    write_text = '\n'.join([line.strip() for line in tmps.split('\n') if line.strip()]) + '\n#####\n'  # 去除whitespace
     # print(write_text)
     return write_text
 
 
 def get_html(hosts):
     start_time = time.time()
-    queue = Queue.Queue()
+    queue = Queue()
     for i in range(5):
         download_thr = DownloadThread(queue)
         download_thr.setDaemon(True)
@@ -70,7 +70,7 @@ def get_html(hosts):
 
     queue.join()
     use_time = time.time() - start_time
-    print('thread_queue use {0}'.format(use_time))
+    print(('thread_queue use {0}'.format(use_time)))
 
 
 class WriteFileThread(threading.Thread):
@@ -86,7 +86,7 @@ class WriteFileThread(threading.Thread):
             # print('###########', self.queue.qsize())
             # data = self.queue.get()
             data = html_queue.get()
-            print('********', data)
+            print(('********', data))
             f.write(data)
         mutex.release()
 
@@ -94,7 +94,7 @@ class WriteFileThread(threading.Thread):
 
 
 def write_file(txtFile):
-    html_queue = Queue.Queue()
+    html_queue = Queue()
 
     for i in range(10):
         write_th = WriteFileThread(txtFile)
@@ -106,11 +106,10 @@ def write_file(txtFile):
 
 
 if __name__ == '__main__':
-    html_queue = Queue.Queue()
+    html_queue = Queue()
     # if：urllib2.URLError: <urlopen error [Errno 10054] >  try to change urls
     hosts = ['https://www.baidu.com', 'https://www.zhihu.com', 'https://www.sougou.com', 'https://www.so.com']
     get_html(hosts)
     txtFile = 'wftest.txt'
     mutex = threading.Lock()
     write_file(txtFile)
-
