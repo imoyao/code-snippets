@@ -14,5 +14,6 @@ def cal_irr_invest_in_month(every_month_invest: int, invest_month: int, start_in
     profile = np.irr(cal_list)
     return (pow(profile + 1, 12) - 1) * 100
 
+if __name__ == '__main__':
 
-print(cal_irr_invest_in_month(EVERY_MONTH_INVEST, INVEST_MONTH, START_INVEST))
+    print(cal_irr_invest_in_month(EVERY_MONTH_INVEST, INVEST_MONTH, START_INVEST))

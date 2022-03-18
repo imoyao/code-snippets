@@ -106,9 +106,9 @@ if __name__ == '__main__':
     # print b
     # print c
     time_list = [set_t, count_t, n_t]
-    print time_list
+    print(time_list)
     time_list.sort()
-    print time_list
+    print(time_list)
     # num > 1000时:n,c,s,l
     # num = 100时:s,c,n,l
     # num = 250时:...

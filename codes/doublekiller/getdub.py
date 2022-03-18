@@ -415,7 +415,7 @@ double files groups:{1};'''.format(total_count, del_count))     # 重复组
                                                                                size=fileinfo['size'],
                                                                                create=fileinfo['create'],
                                                                                path=fileinfo['path']))
-            print "-" * 20
+            print("-" * 20)
     else:
         res = retdatas['result']['message']
         print(res)
