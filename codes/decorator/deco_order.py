@@ -55,10 +55,9 @@ def check_has_execute(func):
 
     @wraps(func)
     def wrapper(*args, **kwargs):
-        ret = None
-        if True:
-            print(f'inner of func check_has_execute.')
-            ret = func(*args, **kwargs)
+
+        print(f'inner of func check_has_execute.')
+        ret = func(*args, **kwargs)
         return ret
 
     return wrapper

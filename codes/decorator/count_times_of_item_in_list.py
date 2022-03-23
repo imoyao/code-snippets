@@ -15,7 +15,6 @@ import numpy as np
 
 import settings
 
-
 cost_time = 0
 
 
@@ -25,9 +24,11 @@ def time_it(func):
         start_time = time.time()
         res = func(*args, **kwargs)
         end_time = time.time()
-        cost_time = end_time-start_time
+        cost_time = end_time - start_time
         return res, cost_time
+
     return wrapper
+
 
 # @time_it
 # def read_excel():
@@ -51,7 +52,6 @@ def set_count(foo_list):
 
 @time_it
 def list_count(foo_list):
-
     foo_dict = {}
     for item in foo_list:
         foo_dict[item] = foo_list.count(item)
@@ -73,6 +73,7 @@ def generate_data(num=1000000):
 def unique(foo_list):
     return dict(zip(*np.unique(foo_list, return_counts=True)))
 
+
 if __name__ == '__main__':
     num = int(raw_input("please enter an int bigger than 10:"))
     foo_list = list(generate_data(num))
@@ -93,13 +94,11 @@ if __name__ == '__main__':
 
     # print "set_count cost {}".format(timeit.timeit("set_count(generate_data(10000))",setup="from __main__ import set_count,generate_data",number = 1000))
 
-
     # print "counter cost {}".format(timeit.timeit("counter(generate_data(10000))",setup="from __main__ import counter,generate_data",number = 1000))
 
     # print "unique cost {}".format(timeit.timeit("unique(generate_data(10000))",setup="from __main__ import unique,generate_data",number = 1000)) 
 
     # print "list_count cost {}".format(timeit.timeit("list_count(generate_data(10000))",setup="from __main__ import list_count,generate_data",number = 1000))
-
 
     # print n
     # print a

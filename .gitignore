@@ -30,3 +30,4 @@ front/test/unit/coverage/
 *.ntvs*
 *.njsproj
 *.sln
+foo.py
