@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>不规则拼贴效果瀑布流相册</title>
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+<!--  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/nanogallery2/6.14.0/css/nanogallery2.min.css">-->
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/nanogallery2/3.0.5/css/nanogallery2.min.css">
+
+</head>
+<body>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<link href="https://unpkg.com/nanogallery2/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css"></link>
+<script type="text/javascript" src="https://unpkg.com/nanogallery2/dist/jquery.nanogallery2.min.js"></script>
+<div>
+    <p>
+        测试
+    </p>
+</div>
+<div>
+    <div id="nanogallery2">
+<!--        <a href="include/images/hero-img1.jpg" data-ngThumb="include/images/hero-img1.jpg" data-ngdesc="Description 1"></a>-->
+<!--        <a href="include/images/hero-img2.jpg" data-ngThumb="include/images/hero-img2.jpg" data-ngdesc="Description 2"></a>-->
+<!--        <a href="include/gallery/1243546.jpg" data-ngThumb="include/gallery/1243546.jpg" data-ngdesc="Description 3"></a>-->
+<!--        <a href="include/gallery/98765.jpg" data-ngThumb="include/gallery/98765.jpg" data-ngdesc="Description 3"></a>-->
+<!--        &lt;!&ndash; Add more images here &ndash;&gt;-->
+    </div>
+
+</div>
+
+
+<!--<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>-->
+<!--<script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>-->
+<!--<script src="https://cdn.bootcdn.net/ajax/libs/nanogallery2/3.0.5/jquery.nanogallery2.min.js"></script>-->
+
+
+
+<script>
+
+    $("#nanogallery2").nanogallery2({
+galleryDisplayTransitionDuration: 1500,
+galleryMosaic : [
+{ w: 2, h: 1, c: 1, r: 1 },
+{ w: 1, h: 1, c: 1, r: 2 },
+{ w: 1, h: 2, c: 1, r: 3 },
+{ w: 1, h: 2, c: 1, r: 4 },
+{ w: 2, h: 2, c: 2, r: 1 },
+{ w: 2, h: 2, c: 2, r: 2 },
+{ w: 2, h: 2, c: 2, r: 3 },
+{ w: 2, h: 2, c: 2, r: 4 },
+],
+thumbnailAlignment: "scaled",
+thumbnailHeight: 300,
+thumbnailWidth: 300,
+thumbnailBaseGridHeight: 80,
+thumbnailDisplayTransition: "slideLeft",
+thumbnailDisplayTransitionDuration: 600,
+thumbnailDisplayInterval: 30,
+galleryMaxRows: 1,
+galleryDisplayMode: "rows",
+thumbnailL1GutterWidth: 0,
+thumbnailL1GutterHeight: 0,
+thumbnailBorderHorizontal: 0,
+thumbnailBorderVertical: 0,
+thumbnailL1BuildInit2: "image_scale_1.20",
+thumbnailL1HoverEffect2: "thumbnail_scale_1.00_1.05_300|image_translateX_-20px_20px",
+thumbnailToolbarImage: null,
+thumbnailToolbarAlbum: null,
+thumbnailLabel: {
+display: false,
+position: "onBottomOverImage",
+hideIcons: true,
+titleFontSize: "1em",
+align: "left",
+titleMultiLine: true,
+displayDescription: false
+},
+gallerySorting: "random",
+galleryTheme: {
+thumbnail: {
+titleShadow: "none",
+descriptionShadow: "none",
+titleColor: "#fff"
+},
+navigationBreadcrumb: {
+background: "#3C4B5B"
+},
+navigationFilter: {
+background: "#2E7C7F",
+backgroundSelected: "#19676B",
+color: "#eee"
+}
+},
+XviewerTheme: {
+barBackground: "rgba(35, 203, 153, 0.7)"
+},
+viewerToolbar: {
+display: false
+},
+viewerTools: {
+topLeft: "label",
+topRight: "shareButton, rotateLeft, rotateRight, fullscreenButton, closeButton"
+},
+touchAnimation: false,
+locationHash: true,
+items: [
+{
+src: "include/images/hero-img1.jpg",
+srct: "include/images/hero-img1.jpg",
+title: "pic 1"
+},
+{
+src: "include/images/hero-img2.jpg",
+srct: "include/images/hero-img2.jpg",
+title: "pic 2"
+},{
+src: "include/gallery/1243546.jpg",
+srct: "include/gallery/1243546.jpg",
+title: "pic 3"
+},
+{
+src: "include/images/hero-img2.jpg",
+srct: "include/images/hero-img2.jpg",
+title: "pic 4"
+},{
+src: "include/gallery/1243546.jpg",
+srct: "include/gallery/1243546.jpg",
+title: "pic 5"
+},
+{
+src: "include/images/hero-img2.jpg",
+srct: "include/images/hero-img2.jpg",
+title: "pic 6"
+},{
+src: "include/gallery/1243546.jpg",
+srct: "include/gallery/1243546.jpg",
+title: "pic 7"
+},{
+src: "include/gallery/98765.jpg",
+srct: "include/gallery/98765.jpg",
+title: "pic 8"
+}]
+});
+
+</script>
+
+</body>
+</html>

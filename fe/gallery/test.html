@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>不规则拼贴效果瀑布流相册</title>
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+<!--  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/nanogallery2/6.14.0/css/nanogallery2.min.css">-->
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/nanogallery2/3.0.5/css/nanogallery2.min.css">
+</head>
+<body>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<link href="https://unpkg.com/nanogallery2/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css"></link>
+<script type="text/javascript" src="https://unpkg.com/nanogallery2/dist/jquery.nanogallery2.min.js"></script>
+<div id="nanogallery3"></div>
+<script>
+$("#nanogallery3").nanogallery2({
+galleryDisplayTransitionDuration: 1500,
+galleryMosaic : [
+{ w: 2, h: 2, c: 1, r: 1 },
+{ w: 1, h: 1, c: 3, r: 1 },
+{ w: 1, h: 1, c: 3, r: 2 },
+{ w: 1, h: 2, c: 4, r: 1 },
+{ w: 2, h: 1, c: 5, r: 1 },
+{ w: 2, h: 2, c: 5, r: 2 },
+{ w: 1, h: 1, c: 4, r: 3 },
+{ w: 2, h: 1, c: 2, r: 3 },
+{ w: 1, h: 2, c: 1, r: 3 },
+{ w: 1, h: 1, c: 2, r: 4 },
+{ w: 2, h: 1, c: 3, r: 4 },
+{ w: 1, h: 1, c: 5, r: 4 },
+{ w: 1, h: 1, c: 6, r: 4 }
+],
+thumbnailAlignment: "scaled",
+thumbnailHeight: 300,
+thumbnailWidth: 300,
+thumbnailBaseGridHeight: 80,
+thumbnailDisplayTransition: "slideLeft",
+thumbnailDisplayTransitionDuration: 600,
+thumbnailDisplayInterval: 30,
+galleryMaxRows: 1,
+galleryDisplayMode: "rows",
+thumbnailL1GutterWidth: 0,
+thumbnailL1GutterHeight: 0,
+thumbnailBorderHorizontal: 0,
+thumbnailBorderVertical: 0,
+thumbnailL1BuildInit2: "image_scale_1.20",
+thumbnailL1HoverEffect2: "thumbnail_scale_1.00_1.05_300|image_translateX_-20px_20px",
+thumbnailToolbarImage: null,
+thumbnailToolbarAlbum: null,
+thumbnailLabel: {
+display: false,
+position: "onBottomOverImage",
+hideIcons: true,
+titleFontSize: "1em",
+align: "left",
+titleMultiLine: true,
+displayDescription: false
+},
+gallerySorting: "random",
+galleryTheme: {
+thumbnail: {
+titleShadow: "none",
+descriptionShadow: "none",
+titleColor: "#fff"
+},
+navigationBreadcrumb: {
+background: "#3C4B5B"
+},
+navigationFilter: {
+background: "#2E7C7F",
+backgroundSelected: "#19676B",
+color: "#eee"
+}
+},
+XviewerTheme: {
+barBackground: "rgba(35, 203, 153, 0.7)"
+},
+viewerToolbar: {
+display: false
+},
+viewerTools: {
+topLeft: "label",
+topRight: "shareButton, rotateLeft, rotateRight, fullscreenButton, closeButton"
+},
+touchAnimation: false,
+locationHash: true,
+items: [{
+src: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgXlgHV_ZCa2QYOci-ZJurDjS68U1ucZSqOR8jduGZw5WNnK5sJ6hlG83pOZgpPGv8heNQUuRMXr599mYcdji4q30MwFwhUC2hn0DiQQ2ULfaFN7P6q8CcA1JIzc-1Hx0p6h_jRGVAaqJ59/s1600/cc0-image-stock-license.jpg",
+srct: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgXlgHV_ZCa2QYOci-ZJurDjS68U1ucZSqOR8jduGZw5WNnK5sJ6hlG83pOZgpPGv8heNQUuRMXr599mYcdji4q30MwFwhUC2hn0DiQQ2ULfaFN7P6q8CcA1JIzc-1Hx0p6h_jRGVAaqJ59/s300/cc0-image-stock-license.jpg",
+title: "pic 1"
+}, {
+src: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhRNr9Bky93aTxr9IWH87dTQf9i7q-mp_T6Vl_qKdTrnS5NyNmtRNYgmYLSistIQkj7QKUvMLzQemPEODVk1NGqfBxNKEL7TWMu34fxBYondB70hbRtp1ynmmJNsFHeKdgUbLy6AIOgJ0FT/s1600/will-google-close-blogger-business-analysis.jpg",
+srct: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhRNr9Bky93aTxr9IWH87dTQf9i7q-mp_T6Vl_qKdTrnS5NyNmtRNYgmYLSistIQkj7QKUvMLzQemPEODVk1NGqfBxNKEL7TWMu34fxBYondB70hbRtp1ynmmJNsFHeKdgUbLy6AIOgJ0FT/s300/will-google-close-blogger-business-analysis.jpg",
+title: "pic 2"
+}, {
+src: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjS8sCgWF_eRUYG2T8dlMVw7p3b1G54CBATGA1puPBk04L-WCsMprqnz9I5Op0di9O6XNBCUOOrld-shVZTu6SkSgX9ZsYNNuwKir1JatC5VZd4-OF7f8oQ01hL7JvPCx0A5y0T-Ip5fjL1/s1600/blogger-free-consultant.jpg",
+srct: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjS8sCgWF_eRUYG2T8dlMVw7p3b1G54CBATGA1puPBk04L-WCsMprqnz9I5Op0di9O6XNBCUOOrld-shVZTu6SkSgX9ZsYNNuwKir1JatC5VZd4-OF7f8oQ01hL7JvPCx0A5y0T-Ip5fjL1/s300/blogger-free-consultant.jpg",
+title: "pic 3"
+}, {
+src: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi-_v-pYzb6HxfdqMTu76o0JQZL_uMo1Hx8iZrRTX2g0UhHjyY9npU0FlKcQsX5SZaHxMfPIFO17p-4mxn1B1W-MYBCruJoZ1B1cheU2ssYhmgxkaLQR7G9H1rLkTeqNEzOcKJ9wM9W9q5I/s1600/mobile-detect-webview-fb-line-in-app.jpg",
+srct: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi-_v-pYzb6HxfdqMTu76o0JQZL_uMo1Hx8iZrRTX2g0UhHjyY9npU0FlKcQsX5SZaHxMfPIFO17p-4mxn1B1W-MYBCruJoZ1B1cheU2ssYhmgxkaLQR7G9H1rLkTeqNEzOcKJ9wM9W9q5I/s300/mobile-detect-webview-fb-line-in-app.jpg",
+title: "pic 4"
+}, {
+src: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEimZRe71G23iFca6yFEGzT2hbgS8L9PSUwDTV1KFDGzJHdlXAnL3uogb_IBqYja4vowX_c6yQnkgJ5TiYzXxvo0oelCWdWVtzBannmI1VltHdPIYFw_2oayepSxdYVE4REOaEBAHNHGywW2/s1600/picasa-url-parameter.jpg",
+srct: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEimZRe71G23iFca6yFEGzT2hbgS8L9PSUwDTV1KFDGzJHdlXAnL3uogb_IBqYja4vowX_c6yQnkgJ5TiYzXxvo0oelCWdWVtzBannmI1VltHdPIYFw_2oayepSxdYVE4REOaEBAHNHGywW2/s300/picasa-url-parameter.jpg",
+title: "pic 5"
+}, {
+src: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhZ6YamXCJgsybo1hdgOO_Iot4-NZW2zz3A7CNysRS6dZiALRVA5Pi_zN6rKz8Vw1t6Ad-dG-vFAQch5Ed1afviheuPht_eF2FZy_nwLPS2H6ArqWt7iVf_d1gEZL4ApptHIpUs_xHnFkcX/s1600/github-api-upload-file.jpg",
+srct: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhZ6YamXCJgsybo1hdgOO_Iot4-NZW2zz3A7CNysRS6dZiALRVA5Pi_zN6rKz8Vw1t6Ad-dG-vFAQch5Ed1afviheuPht_eF2FZy_nwLPS2H6ArqWt7iVf_d1gEZL4ApptHIpUs_xHnFkcX/s300/github-api-upload-file.jpg",
+title: "pic 6"
+}, {
+src: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiyRKoqPvM51_Z9i7OiLkO6b_luZHnE8R5Y1QtfAIGAvNY0HOixyKx28iFd41u7u302T3d_WsQmZA610WQwJcKz-TxXrkKkeP1ZDm6LSjWpK7P58WfF73q-YTMjq-GwdQcSkI1z7my-79Ux/s1600/seo-fake-information-identification.jpg",
+srct: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiyRKoqPvM51_Z9i7OiLkO6b_luZHnE8R5Y1QtfAIGAvNY0HOixyKx28iFd41u7u302T3d_WsQmZA610WQwJcKz-TxXrkKkeP1ZDm6LSjWpK7P58WfF73q-YTMjq-GwdQcSkI1z7my-79Ux/s300/seo-fake-information-identification.jpg",
+title: "pic 7"
+}, {
+src: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjBJdYvPb6GHnDNz1MhnI8nMESsMGtet5C23nj7abpGir9zymPj6LqEKwk5YCp_Pd36FocqRcbPDvkKvcAf4PpXIB3c8AI1yhORchKG5AhFYqFNUjz39GtnBIwkq6V2wlmpBeEyoOYgClgE/s1600/how-to-become-top-blog-writer.jpg",
+srct: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjBJdYvPb6GHnDNz1MhnI8nMESsMGtet5C23nj7abpGir9zymPj6LqEKwk5YCp_Pd36FocqRcbPDvkKvcAf4PpXIB3c8AI1yhORchKG5AhFYqFNUjz39GtnBIwkq6V2wlmpBeEyoOYgClgE/s300/how-to-become-top-blog-writer.jpg",
+title: "pic 8"
+}, {
+src: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgXlgHV_ZCa2QYOci-ZJurDjS68U1ucZSqOR8jduGZw5WNnK5sJ6hlG83pOZgpPGv8heNQUuRMXr599mYcdji4q30MwFwhUC2hn0DiQQ2ULfaFN7P6q8CcA1JIzc-1Hx0p6h_jRGVAaqJ59/s1600/cc0-image-stock-license.jpg",
+srct: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgXlgHV_ZCa2QYOci-ZJurDjS68U1ucZSqOR8jduGZw5WNnK5sJ6hlG83pOZgpPGv8heNQUuRMXr599mYcdji4q30MwFwhUC2hn0DiQQ2ULfaFN7P6q8CcA1JIzc-1Hx0p6h_jRGVAaqJ59/s300/cc0-image-stock-license.jpg",
+title: "pic 1"
+}, {
+src: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhRNr9Bky93aTxr9IWH87dTQf9i7q-mp_T6Vl_qKdTrnS5NyNmtRNYgmYLSistIQkj7QKUvMLzQemPEODVk1NGqfBxNKEL7TWMu34fxBYondB70hbRtp1ynmmJNsFHeKdgUbLy6AIOgJ0FT/s1600/will-google-close-blogger-business-analysis.jpg",
+srct: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhRNr9Bky93aTxr9IWH87dTQf9i7q-mp_T6Vl_qKdTrnS5NyNmtRNYgmYLSistIQkj7QKUvMLzQemPEODVk1NGqfBxNKEL7TWMu34fxBYondB70hbRtp1ynmmJNsFHeKdgUbLy6AIOgJ0FT/s300/will-google-close-blogger-business-analysis.jpg",
+title: "pic 2"
+}, {
+src: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjS8sCgWF_eRUYG2T8dlMVw7p3b1G54CBATGA1puPBk04L-WCsMprqnz9I5Op0di9O6XNBCUOOrld-shVZTu6SkSgX9ZsYNNuwKir1JatC5VZd4-OF7f8oQ01hL7JvPCx0A5y0T-Ip5fjL1/s1600/blogger-free-consultant.jpg",
+srct: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjS8sCgWF_eRUYG2T8dlMVw7p3b1G54CBATGA1puPBk04L-WCsMprqnz9I5Op0di9O6XNBCUOOrld-shVZTu6SkSgX9ZsYNNuwKir1JatC5VZd4-OF7f8oQ01hL7JvPCx0A5y0T-Ip5fjL1/s300/blogger-free-consultant.jpg",
+title: "pic 3"
+}, {
+src: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi-_v-pYzb6HxfdqMTu76o0JQZL_uMo1Hx8iZrRTX2g0UhHjyY9npU0FlKcQsX5SZaHxMfPIFO17p-4mxn1B1W-MYBCruJoZ1B1cheU2ssYhmgxkaLQR7G9H1rLkTeqNEzOcKJ9wM9W9q5I/s1600/mobile-detect-webview-fb-line-in-app.jpg",
+srct: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi-_v-pYzb6HxfdqMTu76o0JQZL_uMo1Hx8iZrRTX2g0UhHjyY9npU0FlKcQsX5SZaHxMfPIFO17p-4mxn1B1W-MYBCruJoZ1B1cheU2ssYhmgxkaLQR7G9H1rLkTeqNEzOcKJ9wM9W9q5I/s300/mobile-detect-webview-fb-line-in-app.jpg",
+title: "pic 4"
+}, {
+src: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEimZRe71G23iFca6yFEGzT2hbgS8L9PSUwDTV1KFDGzJHdlXAnL3uogb_IBqYja4vowX_c6yQnkgJ5TiYzXxvo0oelCWdWVtzBannmI1VltHdPIYFw_2oayepSxdYVE4REOaEBAHNHGywW2/s1600/picasa-url-parameter.jpg",
+srct: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEimZRe71G23iFca6yFEGzT2hbgS8L9PSUwDTV1KFDGzJHdlXAnL3uogb_IBqYja4vowX_c6yQnkgJ5TiYzXxvo0oelCWdWVtzBannmI1VltHdPIYFw_2oayepSxdYVE4REOaEBAHNHGywW2/s300/picasa-url-parameter.jpg",
+title: "pic 5"
+}]
+});
+</script>
+<style>.nGY2 .nGY2GThumbnail { background: #444; }</style>
+
+</body>
+</html>
